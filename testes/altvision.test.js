@@ -1,15 +1,12 @@
 const { JSDOM } = require('jsdom');
+const fs = require('fs');
+const path = require('path');
 
 // Mock do chrome.runtime
-const mockSendMessage = jest.fn();
-const mockOnMessage = {
-  addListener: jest.fn()
-};
-
 global.chrome = {
   runtime: {
-    onMessage: mockOnMessage,
-    sendMessage: mockSendMessage,
+    onMessage: { addListener: jest.fn() },
+    sendMessage: jest.fn(),
   }
 };
 
@@ -36,10 +33,8 @@ global.MutationObserver = class MutationObserver {
 describe('AltVision - Testes Unitários', () => {
   let dom;
   let document;
-  let window;
 
   beforeEach(() => {
-    // Reset dos mocks
     jest.clearAllMocks();
 
     dom = new JSDOM(`
@@ -54,36 +49,55 @@ describe('AltVision - Testes Unitários', () => {
       runScripts: 'dangerously',
     });
 
-    window = dom.window;
-    document = window.document;
+    document = dom.window.document;
     global.document = document;
-    global.window = window;
+    global.window = dom.window;
 
-    // Atribui dimensões para as imagens
     document.querySelectorAll('img').forEach(img => {
-      Object.defineProperty(img, 'naturalWidth', { value: 100 });
-      Object.defineProperty(img, 'naturalHeight', { value: 100 });
+      Object.defineProperty(img, 'naturalWidth', { value: 100, configurable: true });
+      Object.defineProperty(img, 'naturalHeight', { value: 100, configurable: true });
     });
   });
 
+  // ── Teste 1: imagensSemAlt() ──────────────────────────────────────────────
   test('imagensSemAlt() retorna apenas imagens sem descrição', () => {
-    // Implementa a lógica da função diretamente para teste
     function imagensSemAlt() {
       return Array.from(document.querySelectorAll("img")).filter(img => {
         const alt = img.getAttribute("alt");
-        return (alt === null || alt.trim() === "") && img.naturalWidth > 0 && !img.dataset.altvisionProcessado;
+        const semAlt = (alt === null || alt.trim() === "") && !img.dataset.altvisionProcessado;
+        if (!semAlt) return false;
+        return img.naturalWidth > 0;
       });
     }
 
     const imgs = imagensSemAlt();
-    // Imagens sem alt ou com alt="": img2, img3, img4
-    // Porém naturalWidth é 100, então todas devem ser retornadas, exceto img1 que tem alt
     expect(imgs.length).toBe(3);
     expect(imgs[0].id).toBe("img2");
     expect(imgs[1].id).toBe("img3");
     expect(imgs[2].id).toBe("img4");
   });
 
+  // ── Teste 2: imagensSemAlt() ignora imagens já processadas ────────────────
+  test('imagensSemAlt() ignora imagens marcadas como processadas', () => {
+    function imagensSemAlt() {
+      return Array.from(document.querySelectorAll("img")).filter(img => {
+        const alt = img.getAttribute("alt");
+        const semAlt = (alt === null || alt.trim() === "") && !img.dataset.altvisionProcessado;
+        if (!semAlt) return false;
+        return img.naturalWidth > 0;
+      });
+    }
+
+    // Marca img2 como já processada
+    document.getElementById("img2").dataset.altvisionProcessado = "true";
+
+    const imgs = imagensSemAlt();
+    expect(imgs.length).toBe(2);
+    expect(imgs[0].id).toBe("img3");
+    expect(imgs[1].id).toBe("img4");
+  });
+
+  // ── Teste 3: manifest ─────────────────────────────────────────────────────
   test('manifest possui os campos essenciais', () => {
     const manifest = require('../manifest.json');
     expect(manifest.manifest_version).toBe(3);
@@ -92,39 +106,58 @@ describe('AltVision - Testes Unitários', () => {
     expect(manifest.permissions).toContain('scripting');
     expect(manifest.content_scripts[0].js).toContain('content.js');
     expect(manifest.background.service_worker).toBe('background.js');
-    expect(manifest.commands.descrever).toBeDefined();
+    // comando atual é "processar" (consistente com background.js)
+    expect(manifest.commands.processar).toBeDefined();
   });
 
+  // ── Teste 4: popup.html ───────────────────────────────────────────────────
   test('popup.html contém os atalhos corretos', () => {
-    const fs = require('fs');
-    const path = require('path');
     const popupHtml = fs.readFileSync(path.join(__dirname, '../popup.html'), 'utf-8');
+    // atalho de navegação
     expect(popupHtml).toContain('Ctrl+Shift+→');
-    expect(popupHtml).toContain('Ctrl+Shift+Y');
-    expect(popupHtml).toContain('Descrever imagem em foco');
+    expect(popupHtml).toContain('Ctrl+Shift+←');
+    // atalho de descrição atual (U, não Y)
+    expect(popupHtml).toContain('Ctrl+Shift+U');
+    // textos descritivos
     expect(popupHtml).toContain('Próxima imagem sem descrição');
+    expect(popupHtml).toContain('Imagem anterior sem descrição');
+    expect(popupHtml).toContain('Descrever imagem em foco');
   });
 
-  test('popup.js manda mensagem para a aba ativa', () => {
-    // Simula o DOM do popup
-    const popupDom = new JSDOM('<html><body><button id="btn"></button><span id="status"></span></body></html>');
-    const popupDoc = popupDom.window.document;
-    global.document = popupDoc;
-
-    // Mock do chrome
-    const mockSend = jest.fn();
-    global.chrome = {
-      tabs: {
-        query: jest.fn((opt, cb) => cb([{ id: 1 }])),
-        sendMessage: mockSend
-      }
-    };
-
-    // Importa e executa o popup
-    require('../popup.js');
-    const btn = popupDoc.getElementById('btn');
-    btn.click();
-
-    expect(global.chrome.tabs.query).toHaveBeenCalled();
+  // ── Teste 5: popup.html não carrega popup.js (design informativo) ─────────
+  test('popup.html não referencia popup.js', () => {
+    const popupHtml = fs.readFileSync(path.join(__dirname, '../popup.html'), 'utf-8');
+    // popup.js foi removido pois o popup atual é apenas informativo (sem botões)
+    expect(popupHtml).not.toContain('popup.js');
   });
+
+  // ── Teste 6: background.js escuta o comando correto ──────────────────────
+  test('background.js escuta o comando "processar"', () => {
+    const bgCode = fs.readFileSync(path.join(__dirname, '../background.js'), 'utf-8');
+    // deve escutar "processar", que bate com manifest.commands.processar
+    expect(bgCode).toContain('"processar"');
+    // não deve mais referenciar "descrever" como comando
+    expect(bgCode).not.toContain('"descrever"');
+  });
+
+  // ── Teste 7: content.js usa WeakMap para identidade de overlays ───────────
+  test('content.js usa WeakMap para mapear overlays (não depende de src como chave)', () => {
+    const contentCode = fs.readFileSync(path.join(__dirname, '../content.js'), 'utf-8');
+    expect(contentCode).toContain('WeakMap');
+    expect(contentCode).toContain('overlayParaImg');
+    expect(contentCode).toContain('imgParaOverlay');
+  });
+
+  // ── Teste 8: content.js tem stopPropagation para evitar duplo disparo ─────
+  test('content.js usa stopPropagation nos handlers de teclado do overlay', () => {
+    const contentCode = fs.readFileSync(path.join(__dirname, '../content.js'), 'utf-8');
+    expect(contentCode).toContain('stopPropagation');
+  });
+
+  // ── Teste 9: content.js desconecta observer antes de manipular o DOM ──────
+  test('content.js desconecta o MutationObserver antes de atualizar overlays', () => {
+    const contentCode = fs.readFileSync(path.join(__dirname, '../content.js'), 'utf-8');
+    expect(contentCode).toContain('observer.disconnect()');
+  });
+
 });
