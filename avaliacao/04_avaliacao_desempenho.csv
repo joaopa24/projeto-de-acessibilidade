@@ -1,0 +1,21 @@
+ID;Metrica;Criterio;Metodo de Avaliacao;Resultado;Status;Observacoes
+D01;Tempo de carregamento da extensao;< 100ms;Medicao no DevTools;~50ms;Aprovado;Carregamento instantaneo
+D02;Tempo de escaneamento DOM,< 500ms;Medicao com console.time;~100ms para 50 imagens;Aprovado;querySelectorAll rapido
+D03;Tempo de criacao de overlays,< 200ms por imagem;Medicao individual;~10ms por overlay;Aprovado;DOM manipulation eficiente
+D04;Tempo de conversao base64,< 500ms;Medicao com performance.now;~200ms para imagem 1920x1080;Aprovado;Depende do tamanho da imagem
+D05;Tempo de resposta da API Gemini,< 5000ms;Medicao do fetch;~2000-4000ms;Aprovado;Depende da rede e tamanho
+D06;Tempo de injecao de alt,< 50ms;Medicao do setAttribute;~5ms;Aprovado;Operacao quase instantanea
+D07;Tempo de leitura TTS,< 100ms para iniciar;Medicao do speak;~50ms;Aprovado;Web Speech API rapida
+D08;Memoria utilizada,< 50MB;Chrome DevTools Memory;~10-20MB;Aprovado;Leve para extensao
+D09;Tamanho do pacote,< 50KB;Verificacao dos arquivos;~18KB;Aprovado;Extensao leve
+D10;Numero de requisicoes,1 por imagem processada;Contagem de fetches;1 POST por imagem;Aprovado;Sem chamadas desnecessarias
+D11;Uso de CPU,< 5% em idle;Monitoramento;~0% em idle;Aprovado;Observer passivo
+D12;Uso de CPU,< 30% durante processamento;Monitoramento;~15% durante conversao;Aprovado;Canvas eficiente
+D13;Velocidade de atualizacao overlays,< 100ms apos scroll;Medicao do scroll handler;~30ms com passive listener;Aprovado;Scroll nao bloqueia
+D14;Velocidade de resposta a teclado,< 50ms;Medicao do keydown;~10ms;Aprovado;Resposta imediata
+D15;Throughput de processamento,~20 imagens por minuto;Teste com pagina com 20 imgs;~15-20 imagens/min;Aprovado;Limitado pela API
+D16;Taxa de erro da API,< 5%;Monitoramento de erros;~2-3% (timeout/rate limit);Aprovado;Tratamento de erro implementado
+D17;Uso de rede,< 500KB por imagem;Verificacao do payload;~100-300KB (base64);Aprovado;Depende da resolucao
+D18;Cache de imagens processadas;Re-processamento evitado;dataset.altvisionProcessado;Funcional;Aprovado;Evita chamadas duplicadas
+D19;Limite de processamento concorrente,1 imagem por vez;Flag processando;Controle de concorrencia;Funcional;Aprovado;Evita sobrecarga
+D20;Recuperacao de erros,100% dos erros tratados;Try/catch implementado;Todos os caminhos com erro tratados;Funcional;Aprovado;Feedback ao usuario

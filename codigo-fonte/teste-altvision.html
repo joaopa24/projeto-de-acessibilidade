@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Página de teste - AltVision</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 0 20px;
+      line-height: 1.6;
+      color: #1a1a1a;
+    }
+    h1 {
+      border-bottom: 2px solid #1a56db;
+      padding-bottom: 10px;
+    }
+    .secao {
+      margin: 40px 0;
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 16px 0;
+      border-radius: 6px;
+    }
+    .grade {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    .grade img {
+      margin: 0;
+    }
+    p.legenda {
+      font-size: 13px;
+      color: #666;
+      margin-top: -8px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Página de teste — AltVision</h1>
+  <p>Esta página contém imagens propositalmente sem o atributo <code>alt</code>, servindo como ambiente de teste para a extensão de acessibilidade.</p>
+
+  <div class="secao">
+    <h2>Imagem isolada</h2>
+    <img src="https://picsum.photos/id/1062/800/450" width="800" height="450">
+    <p class="legenda">Imagem isolada, sem alt.</p>
+  </div>
+
+  <div class="secao">
+    <h2>Galeria em grade 2x2</h2>
+    <div class="grade">
+      <img src="https://picsum.photos/id/1027/400/300" width="400" height="300">
+      <img src="https://picsum.photos/id/1074/400/300" width="400" height="300">
+      <img src="https://picsum.photos/id/342/400/300" width="400" height="300">
+      <img src="https://picsum.photos/id/1066/400/300" width="400" height="300">
+    </div>
+  </div>
+
+  <div class="secao">
+    <h2>Imagem dentro de parágrafo</h2>
+    <p>Algumas vezes uma imagem aparece intercalada com texto, como neste trecho de teste.</p>
+    <img src="https://picsum.photos/id/1011/700/400" width="700" height="400">
+    <p>O texto continua normalmente depois da imagem, simulando um artigo real.</p>
+  </div>
+
+  <div class="secao">
+    <h2>Imagem carregada via JavaScript (dinâmica)</h2>
+    <p>Esta imagem é inserida após 2 segundos, testando o <code>MutationObserver</code> da extensão.</p>
+    <div id="container-dinamico"></div>
+  </div>
+
+  <script>
+    setTimeout(() => {
+      const img = document.createElement("img");
+      img.src = "https://picsum.photos/id/177/700/400";
+      img.width = 700;
+      img.height = 400;
+      img.style.borderRadius = "6px";
+      document.getElementById("container-dinamico").appendChild(img);
+    }, 2000);
+  </script>
+
+</body>
+</html>

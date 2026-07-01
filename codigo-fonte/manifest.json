@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "AltVision",
+  "version": "1.0",
+  "description": "Gera alt text automático para imagens sem descrição usando IA.",
+  "permissions": ["activeTab", "scripting"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "AltVision"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ],
+  "commands": {
+    "processar": {
+      "suggested_key": { "default": "Ctrl+Shift+Y", "mac": "Command+Shift+Y" },
+      "description": "Descrever imagem em foco"
+    }
+  }
+}

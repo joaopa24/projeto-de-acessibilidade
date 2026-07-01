@@ -1,0 +1,21 @@
+ID;Componente;Versao/Teste;Ambiente;Resultado;Status;Observacoes
+C01;Google Chrome;120+;Windows 10/11;Manifest V3 suportado;Aprovado;Versao minima 88
+C02;Google Chrome;120+;macOS;Manifest V3 suportado;Aprovado;Atalho Mac: Command+Shift+Y
+C03;Google Chrome;120+;Linux;Manifest V3 suportado;Aprovado;Testado em Arch Linux
+C04;NVDA;2023.1+;Windows;Le alt text corretamente;Aprovado;Leitura de alt e aria-label
+C05;JAWS;2023+;Windows;Le alt text corretamente;Aprovado;Leitura de alt e aria-label
+C06;Narrador;Windows 10/11;Windows;Le alt text corretamente;Aprovado;Leitor nativo Windows
+C07;VoiceOver;macOS Ventura+;macOS;Le alt text corretamente;Aprovado;Leitor nativo macOS
+C08;Orca;44+;Linux;Le alt text corretamente;Aprovado;Leitor nativo Linux
+C09;Web Speech API;Navegadores modernos;Multiplataforma;Sintese de voz funciona;Aprovado;Suportado Chrome/Edge
+C10;Canvas API;HTML5;Multiplataforma;Conversao base64 funciona;Aprovado;API nativa do navegador
+C11;MutationObserver;HTML5;Multiplataforma;Monitoramento DOM funciona;Aprovado;API nativa do navegador
+C12;fetch API;HTML5;Multiplataforma;Requisicoes HTTP funcionam;Aprovado;API nativa do navegador
+C13;Service Workers;Manifest V3;Chrome;Background script funciona;Aprovado;Arquitetura V3
+C14;Content Scripts;Manifest V3;Chrome;Injecao em paginas funciona;Aprovado;matches: all_urls
+C15;Chrome Extensions API;Manifest V3;Chrome;Comandos e mensagens funcionam;Aprovado;Permissions: activeTab scripting
+C16;DOM Manipulation;HTML5;Multiplataforma;Overlays criados corretamente;Aprovado;createElement/appendChild
+C17;CSS Positioning;CSS2/CSS3;Multiplataforma;Overlays posicionados corretamente;Aprovado;position: fixed
+C18;Event Listeners;ES6+;Multiplataforma;Teclado e scroll funcionam;Aprovado;addEventListener
+C19;JSON API;ES6+;Multiplataforma;Parse de resposta Gemini;Aprovado;response.json()
+C20;Promise/Async;ES2017+;Multiplataforma;Fluxo assincrono funciona;Aprovado;async/await

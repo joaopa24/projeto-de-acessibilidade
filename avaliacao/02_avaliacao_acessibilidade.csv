@@ -1,0 +1,21 @@
+ID;Criterio WCAG;Nivel;Descricao;Como Avaliado;Resultado;Status;Observacoes
+A01;1.1.1 Conteudo Nao-textual;A;Textos alternativos para conteudo nao-textual;Imagens recebem alt text via IA;Aprovado;Conforme;Alt injetado automaticamente
+A02;1.3.1 Info e Relacoes;A;Informacoes e relacoes sao transmitidas;Overlay usa role=button;Aprovado;Conforme;Atributo role presente
+A03;1.4.3 Contraste (Minimo);AA;Contraste adequado entre texto e fundo;Badge Azul (#1a56db) sobre branco;Aprovado;Conforme;Contraste 4.6:1 aproximado
+A04;2.1.1 Teclado;A;Toda funcionalidade acessivel por teclado;Navegacao via Ctrl+Shift+setas;Aprovado;Conforme;Enter e Y tambem funcionam
+A05;2.1.2 Sem Bloqueio de Teclado;A;Nenhum atalho de teclado fica preso;Navegacao circular (wrap-around);Aprovado;Conforme;Indice volta ao inicio/fim
+A06;2.4.3 Foco;A;Ordem de foco logica e previsivel;Foco segue ordem das imagens no DOM;Aprovado;Conforme;Indice controlado por variavel
+A07;2.4.7 Foco Visivel;AA;Indicador visual de foco presente;Outline muda ao focar overlay;Aprovado;Conforme;2px dashed → 3px solid
+A08;3.1.1 Idioma da Pagina;A;Idioma do conteudo identificado;popup.html lang=pt-BR;Aprovado;Conforme;Atributo lang presente
+A09;3.3.2 Labels ou Instrucoes;A;Labels e instrucoes fornecidos;Overlay tem aria-label descritivo;Aprovado;Conforme;Instrucao de uso no label
+A10;4.1.2 Nome;A;Nome;Funcao e Valor;Todos os componentes tem nome acessivel;Overlay com aria-label;Aprovado;Conforme;Botao do popup com texto visivel
+A11;1.3.5 Identificar Input;AA;Input do usuario identificado;Overlay identificado como button;Aprovado;Conforme;role=button claro
+A12;2.4.6 Titulos e Subtitulos;AA;Titulos e subtitulos informativos;Popup com headings claros;Aprovado;Conforme;h1 com nome da extensao
+A13;3.3.1 Identificacao de Erro;A;Erros identificados automaticamente;Mensagem de erro via falar();Aprovado;Conforme;Feedback sonoro de erro
+A14;3.3.3 Sugerir Correcao;AA;Sugestao de correcao para erros;Mensagem Tente novamente;Aprovado;Conforme;Instrucao clara ao usuario
+A15;2.4.4 Link em Contexto;A;Links identificados pelo contexto;Nao aplicavel;N/A;N/A;Extensao nao usa links
+A16;1.1.1 Texto Alternativo;A;Texto alternativo serve ao proposito;Alt gerado descreve imagem;Aprovado;Conforme;Prompt orienta descricao objetiva
+A17;2.5.3 Label in Name;A;Nome visivel contido no label;Overlay com texto no aria-label;Aprovado;Conforme;Label acessivel acessivel
+A18;1.4.11 Nao Texto Contraste;AA;Contraste adequado para componentes UI;Borda do overlay visivel;Aprovado;Conforme;Cor #1a56db sobre fundo
+A19;2.1.4 Atalhos de Caractere Unico;A;Atalhos de caractere podem ser desativados;Atalho Y configuravel no Chrome;Aprovado;Conforme;Personalizavel em chrome://extensions
+A20;4.1.2 Status Messages;AA;Mensagens de status anunciadas;Web Speech anuncia status;Aprovado;Conforme;falar() informa progresso

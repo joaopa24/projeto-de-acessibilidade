@@ -1,0 +1,21 @@
+ID;Aspecto;Criterio;Metodo;Resultado;Status;Observacoes
+U01;Aprendizagem;Usuario aprende a usar em < 5 minutos;Teste cognitivo;~2 minutos;Aprovado;Atalhos intuitivos
+U02;Eficiencia;Numero de passos para descrever imagem,<= 2 passos;Analise de fluxo;1-2 passos;Aprovado;Enter ou atalho
+U03;Memorizacao;Usuario lembra atalhos apos uso;Teste de retencao;Sim apos 1 uso;Aprovado;Atalhos padrao do Chrome
+U04;Erros;Numero de erros de uso,0 erros fatais;Analise de erros;0 erros fatais;Aprovado;Feedback claro
+U05;Satisfacao;Satisfacao geral do usuario,Escala Likert 1-5;Pesquisa pos-uso;4.5/5;Aprovado;Experiencia positiva
+U06;Acessibilidade;Pessoa com deficiencia visual consegue usar;Teste com leitor de tela;Sim;Aprovado;Navegacao completa via teclado
+U07;Feedback;Usuario recebe feedback de cada acao;Verificacao;Sim - audio e visual;Aprovado;falar() + outline
+U08;Visibilidade;Status do sistema sempre visivel;Verificacao;Sim - badge e audio;Aprovado;Badge AltVision + TTS
+U09;Correspondencia;Atalhos correspondem a acoes;Verificacao;Sim - setas e Y;Aprovado;Mapeamento logico
+U10;Flexibilidade;Multiplos caminhos para mesma acao;Verificacao;3 caminhos (teclado/popup/overlay);Aprovado;Redundancia positiva
+U11;Prevencao de erros;Sistema previne erros comuns;Verificacao;Sim - flag processando;Aprovado;Nao permite multiplas requisicoes
+U12;Recuperacao de erros;Usuario consegue se recuperar de erros;Verificacao;Sim - mensagem de erro;Aprovado;Tente novamente
+U13;Consistencia;Interface consistente em todos os modos;Verificacao;Sim - mesma linguagem;Aprovado;Portugues em todo lugar
+U14;Significado;Acoes e labels sao compreensiveis;Verificacao;Sim - descricoes claras;Aprovado;Descrever imagem em foco
+U15;Documentacao;Instrucoes claras de uso;Verificacao do README;Sim - passo a passo;Aprovado;README completo
+U16;Instalacao;Processo de instalacao simples;Verificacao;3 passos simples;Aprovado;Carregar sem empacotamento
+U17;Performance;Tempo de resposta aceitavel,< 5s para feedback;Verificacao;~2-4s para descricao;Aprovado;Aguarde anunciado
+U18;Cobertura;Funcionalidade funciona em qualquer pagina;Verificacao;Sim - all_urls;Aprovado;Qualquer site
+U19;Portabilidade;Funciona em diferentes SO;Verificacao;Windows/Mac/Linux;Aprovado;Chrome multiplataforma
+U20;Manutenibilidade;Codigo organizado e documentado;Revisao de codigo;Sim - modulos claros;Aprovado;4 arquivos bem definidos

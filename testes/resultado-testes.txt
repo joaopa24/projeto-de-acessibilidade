@@ -1,0 +1,12 @@
+PASS testes/altvision.test.js
+  AltVision - Testes Unitários
+    ✓ imagensSemAlt() retorna apenas imagens sem descrição (73 ms)
+    ✓ manifest possui os campos essenciais (13 ms)
+    ✓ popup.html contém os atalhos corretos (10 ms)
+    ✓ popup.js manda mensagem para a aba ativa (21 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       4 passed, 4 total
+Snapshots:   0 total
+Time:        0.682 s, estimated 1 s
+Ran all test suites.

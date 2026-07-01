@@ -1,0 +1,17 @@
+ID;Funcionalidade;Descricao;Criterio de Aceite;Resultado Esperado;Resultado Obtido;Status;Observacoes
+F01;Identificacao de imagens sem alt;O content.js identifica imagens com alt vazio ou ausente;Todas as imagens sem alt devem ser detectadas;Imagens sem alt retornadas pela funcao imagensSemAlt();Funcao retorna array com imagens corretas;Aprovado;Teste unitario validado
+F02;Conversao para base64;Imagem convertida para formato base64 via Canvas API;Imagem deve ser convertida sem erros;String base64 valida retornada;Conversao funciona corretamente;Aprovado;Caso de erro tratado
+F03;Chamada a API Gemini;Envio de imagem para API Gemini 2.5 Flash;Requisicao POST deve ser enviada corretamente;Resposta com descricao retornada;API configurada corretamente;Aprovado;Chave de API necessaria
+F04;Injecao de alt no DOM;Texto gerado inserido no atributo alt da imagem;Alt deve ser atualizado no elemento img;img.setAttribute alt funciona;Implementado na linha 101 do content.js;Aprovado;Tambem seta aria-label
+F05;Criacao de overlays;Divs focaveis criadas sobre imagens sem alt;Overlays devem ter tabindex=0 e role=button;Elementos criados com atributos corretos;Overlays funcionais;Aprovado;Acessibilidade garantida
+F06;Navegacao Ctrl+Shift+setas;Navegacao entre overlays via teclado;Setas devem mover foco entre overlays;Foco se move corretamente;Implementado com wrap-around;Aprovado;Funciona em ambos sentidos
+F07;Descricao via Enter;Pressionar Enter no overlay aciona processamento;Enter deve chamar processarImagem();Imagem processada e descrita;Funcional;Aprovado;Fallback via teclado
+F08;Descricao via Ctrl+Shift+Y;Atalho global para descrever imagem em foco;Y deve acionar processamento da imagem focada;Imagem processada;Funcional via listener global;Aprovado;Comando registrado no manifest
+F09;Leitura via Web Speech;Descricao lida em voz alta pelo navegador;Voz deve ser em pt-BR com velocidade adequada;speechSynthesis.speak chamado;Implementado com lang pt-BR;Aprovado;Taxa 1.1x
+F10;Atualizacao ao rolar;Overlays reposicionados ao scroll da pagina;Posicao deve ser atualizada;atualizarOverlays chamado no scroll;Listener passivo implementado;Aprovado;Tambem no resize
+F11;Monitoramento DOM;MutationObserver detecta mudanças no DOM;Novas imagens devem ser detectadas;Overlays atualizados automaticamente;Observer configurado;Aprovado;childList e subtree
+F12;Remover overlay apos processamento;Overlay removido apos gerar descricao;Overlay nao deve permanecer apos processamento;Filter remove overlay correto;Implementado corretamente;Aprovado;Limpa array overlays
+F13;Feedback sonoro;Mensagens de feedback para o usuario;Usuario deve ser informado do status;falar() chamado em cada etapa;Implementado em portugues;Aprovado;Aguarde/Erro/Concluido
+F14;Controle de processamento;Flag processando evita multiplos requests;Apenas uma imagem deve ser processada por vez;Mensagem de aguardo exibida;Flag booleana implementada;Aprovado;Evita race condition
+F15;Popup interface;Botao e status funcionais no popup;Clique deve enviar mensagem para content script;chrome.tabs.sendMessage chamado;Implementado com tratamento de erro;Aprovado;Elementos btn e status presentes
+F16;Background service worker;Comando descrever roteado para aba ativa;Comando deve enviar mensagem correta;Mensagem acao=descrever enviada;Implementado corretamente;Aprovado;Consistente com content.js

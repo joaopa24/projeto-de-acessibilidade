@@ -1,0 +1,12 @@
+{
+  "name": "altvision-testes",
+  "version": "1.0.0",
+  "description": "Testes unitários do AltVision",
+  "scripts": {
+    "test": "jest --verbose"
+  },
+  "devDependencies": {
+    "jest": "^29.0.0",
+    "jsdom": "^24.0.0"
+  }
+}
