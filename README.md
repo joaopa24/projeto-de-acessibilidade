@@ -1,94 +1,102 @@
-# AltVision - Extensão de Acessibilidade Visual
+# AltVision — Extensão de Acessibilidade Visual
 
-## Descrição
+Extensão para o Google Chrome que gera automaticamente textos alternativos (`alt`) para imagens sem descrição, utilizando a API Gemini 2.5 Flash do Google. Desenvolvida como projeto acadêmico para a disciplina GCC223 — Acessibilidade na Web (UFLA).
 
-O AltVision é uma extensão para o navegador Google Chrome desenvolvida com o objetivo de melhorar a acessibilidade visual na web para pessoas com deficiência visual. O projeto utiliza inteligência artificial com visão computacional para gerar automaticamente textos alternativos (atributo `alt`) para imagens que não possuem descrição em páginas web.
+---
 
 ## Estrutura do Projeto
 
 ```
 entrega-altvision/
-├── codigo-fonte/          # Código-fonte da extensão
-│   ├── manifest.json      # Manifesto da extensão (Manifest V3)
-│   ├── content.js         # Script de conteúdo principal
-│   ├── background.js      # Service worker
-│   ├── popup.html         # Interface do popup
-|   ├── teste-altvision.html # Página com imagens para testes práticos
-│   └── popup.js           # Controlador do popup
-├── testes/                # Testes unitários
-│   ├── altvision.test.js  # Código dos testes (Jest)
-│   ├── package.json       # Dependências para testes
-│   └── resultado-testes.txt # Resultados dos testes
-├── documentacao/          # Documentação do projeto
-│   └── relatorio.docx       # Relatório descritivo completo
-├── avaliacao/             # Planilhas de avaliação detalhadas
+├── codigo-fonte/
+│   ├── manifest.json          # Manifesto da extensão (Manifest V3)
+│   ├── content.js             # Script de conteúdo principal
+│   ├── background.js          # Service worker (gerencia comandos de teclado)
+│   ├── popup.html             # Interface do popup (atalhos disponíveis)
+│   └── teste-altvision.html   # Página com imagens para testes práticos
+├── testes/
+│   ├── altvision.test.js      # Testes unitários (Jest)
+│   ├── package.json           # Dependências para testes
+│   └── resultado-testes.txt   # Resultados da última execução
+├── documentacao/
+│   └── relatorio.docx         # Relatório descritivo completo
+├── avaliacao/
 │   ├── 01_avaliacao_funcional.csv
 │   ├── 02_avaliacao_acessibilidade.csv
 │   ├── 03_avaliacao_compatibilidade.csv
 │   ├── 04_avaliacao_desempenho.csv
 │   ├── 05_avaliacao_usabilidade.csv
 │   └── 06_resumo_geral.csv
-└── README.md              # Este arquivo
+└── README.md
 ```
 
-## Instalação da Extensão
+---
+
+## Instalação
 
 ### Pré-requisitos
 
 - Google Chrome (versão 88 ou superior)
-- Chave de API do Google Gemini (obtida em https://aistudio.google.com/apikey)
+- Chave de API do Google Gemini — obtenha em https://aistudio.google.com/apikey
 
 ### Passo a Passo
 
-1. **Obter a chave de API do Gemini:**
-   - Acesse https://aistudio.google.com/apikey
-   - Crie uma chave de API
-   - Abra o arquivo `codigo-fonte/content.js`
-   - Substitua `"CHAVE-API"` pela sua chave de API real (linha 1)
+1. **Configure a chave de API:**
+   - Abra `codigo-fonte/content.js`
+   - Na linha 1, substitua o valor de `GEMINI_API_KEY` pela sua chave
 
-2. **Carregar a extensão no Chrome:**
-   - Abra o Chrome e acesse `chrome://extensions/`
-   - Ative o "Modo desenvolvedor" (toggle no canto superior direito)
-   - Clique em "Carregar extensão sem empacotamento"
-   - Selecione a pasta `codigo-fonte`
+2. **Carregue a extensão no Chrome:**
+   - Acesse `chrome://extensions/`
+   - Ative o **Modo desenvolvedor** (toggle no canto superior direito)
+   - Clique em **Carregar extensão sem empacotamento**
+   - Selecione a pasta `codigo-fonte/`
 
-3. **Configurar atalhos de teclado (opcional):**
+3. **(Opcional) Personalize os atalhos:**
    - Acesse `chrome://extensions/shortcuts`
-   - Localize "AltVision"
-   - Configure o atalho para "Descrever imagem em foco" (padrão: Ctrl+Shift+Y)
+   - Localize **AltVision** e ajuste os atalhos conforme preferência
+
+---
 
 ## Uso
 
-### Navegação por Teclado
+### Atalhos de Teclado
 
 | Atalho | Ação |
 |--------|------|
-| `Ctrl+Shift+→` ou `↓` | Próxima imagem sem descrição |
-| `Ctrl+Shift+←` ou `↑` | Imagem anterior sem descrição |
-| `Enter` ou `Ctrl+Shift+Y` | Descrever imagem em foco |
+| `Ctrl+Shift+→` | Avançar para a próxima imagem sem descrição |
+| `Ctrl+Shift+←` | Retornar para a imagem anterior sem descrição |
+| `Enter` ou `Ctrl+Shift+U` | Descrever a imagem em foco |
+| `Tab` / `Shift+Tab` | Navegar entre imagens (alternativa nativa) |
 
-### Interface do Popup
-
-1. Clique no ícone da extensão na barra de ferramentas
-2. Clique no botão "Processar imagens da página"
-3. As descrições serão geradas e lidas em voz alta
+> A navegação é linear e sequencial, seguindo a ordem das imagens no documento, sem depender de orientação espacial na tela — adequado para uso com leitores de tela.
 
 ### Fluxo de Uso
 
-1. A extensão escaneia automaticamente a página e identifica imagens sem descrição
-2. Overlays azuis tracejados são criados sobre as imagens identificadas
-3. Use `Ctrl+Shift+→`/`←` para navegar entre as imagens
-4. Ao chegar na imagem desejada, pressione `Enter` ou `Ctrl+Shift+Y`
-5. A descrição será gerada pela IA e lida em voz alta
-6. O atributo `alt` da imagem será atualizado automaticamente
+1. Ao carregar qualquer página, a extensão escaneia automaticamente o DOM e identifica imagens sem `alt`
+2. Overlays azuis tracejados são criados sobre cada imagem identificada, com `tabindex="0"` e `role="button"`
+3. Use `Ctrl+Shift+→` / `←` (ou `Tab` / `Shift+Tab`) para navegar entre as imagens
+4. Ao chegar na imagem desejada, pressione `Enter` ou `Ctrl+Shift+U`
+5. A descrição é gerada pela API Gemini 2.5 Flash e lida em voz alta em português brasileiro
+6. O atributo `alt` e `aria-label` da imagem são atualizados automaticamente no DOM
 
-## Tecnologias Utilizadas
+### Popup
 
-- **JavaScript** - Linguagem de programação
-- **Manifest V3** - Arquitetura de extensões do Chrome
-- **Gemini 2.5 Flash API** - IA para geração de descrições
-- **Canvas API** - Conversão de imagens para base64
-- **Web Speech API** - Síntese de voz em português brasileiro
+Clique no ícone **✦ AltVision** na barra de ferramentas para ver um resumo dos atalhos disponíveis.
+
+---
+
+## Tecnologias
+
+| Tecnologia | Finalidade |
+|------------|------------|
+| Manifest V3 | Arquitetura moderna de extensões Chrome |
+| API Gemini 2.5 Flash | Geração de descrições de imagens via IA |
+| Fetch API + FileReader | Conversão de imagens para base64 (contorna limitações de CORS do Canvas) |
+| Web Speech API | Síntese de voz nativa em pt-BR |
+| MutationObserver | Detecção de imagens inseridas dinamicamente no DOM |
+| WeakMap | Mapeamento de overlays por referência de elemento DOM (evita conflito com imagens de URL duplicada) |
+
+---
 
 ## Testes
 
@@ -100,15 +108,22 @@ npm install
 npx jest --verbose
 ```
 
+Os testes cobrem: identificação de imagens sem `alt`, validação do manifest, conteúdo do popup, consistência dos comandos no `background.js`, e verificação das correções de bugs críticos (loop infinito no MutationObserver, navegação com imagens duplicadas, duplo disparo de eventos).
+
+---
+
 ## Funcionalidades
 
-- Identificação automática de imagens sem atributo `alt`
-- Geração de descrições via IA (Gemini 2.5 Flash)
-- Navegação completa via teclado
-- Leitura das descrições em voz alta (pt-BR)
-- Atualização automática ao rolar a página
+- Identificação automática de imagens sem `alt` ou com `alt` vazio
+- Suporte a imagens carregadas dinamicamente via JavaScript
+- Geração de descrições em português brasileiro via Gemini 2.5 Flash
+- Navegação linear por teclado, sem dependência de orientação espacial
+- Leitura das descrições em voz alta (Web Speech API, pt-BR)
+- Reposicionamento automático dos overlays ao rolar a página ou redimensionar a janela
 - Compatibilidade com leitores de tela (NVDA, JAWS)
+
+---
 
 ## Licença
 
-Projeto acadêmico para fins de estudo.
+Projeto acadêmico para fins de estudo — GCC223, UFLA, 2026.
