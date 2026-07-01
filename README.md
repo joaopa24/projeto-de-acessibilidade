@@ -13,6 +13,7 @@ entrega-altvision/
 │   ├── content.js             # Script de conteúdo principal
 │   ├── background.js          # Service worker (gerencia comandos de teclado)
 │   ├── popup.html             # Interface do popup (atalhos disponíveis)
+|   ├── popup.js               # Javascript do popup
 │   └── teste-altvision.html   # Página com imagens para testes práticos
 ├── testes/
 │   ├── altvision.test.js      # Testes unitários (Jest)
