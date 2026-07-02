@@ -2,6 +2,9 @@ const { JSDOM } = require('jsdom');
 const fs = require('fs');
 const path = require('path');
 
+// Caminho para a pasta onde ficam os arquivos-fonte da extensão
+const CODIGO_FONTE = path.join(__dirname, '../codigo-fonte');
+
 // Mock do chrome.runtime
 global.chrome = {
   runtime: {
@@ -99,7 +102,7 @@ describe('AltVision - Testes Unitários', () => {
 
   // ── Teste 3: manifest ─────────────────────────────────────────────────────
   test('manifest possui os campos essenciais', () => {
-    const manifest = require('../manifest.json');
+    const manifest = require(path.join(CODIGO_FONTE, 'manifest.json'));
     expect(manifest.manifest_version).toBe(3);
     expect(manifest.name).toBe('AltVision');
     expect(manifest.permissions).toContain('activeTab');
@@ -112,7 +115,7 @@ describe('AltVision - Testes Unitários', () => {
 
   // ── Teste 4: popup.html ───────────────────────────────────────────────────
   test('popup.html contém os atalhos corretos', () => {
-    const popupHtml = fs.readFileSync(path.join(__dirname, '../popup.html'), 'utf-8');
+    const popupHtml = fs.readFileSync(path.join(CODIGO_FONTE, 'popup.html'), 'utf-8');
     // atalho de navegação
     expect(popupHtml).toContain('Ctrl+Shift+→');
     expect(popupHtml).toContain('Ctrl+Shift+←');
@@ -126,14 +129,14 @@ describe('AltVision - Testes Unitários', () => {
 
   // ── Teste 5: popup.html não carrega popup.js (design informativo) ─────────
   test('popup.html não referencia popup.js', () => {
-    const popupHtml = fs.readFileSync(path.join(__dirname, '../popup.html'), 'utf-8');
+    const popupHtml = fs.readFileSync(path.join(CODIGO_FONTE, 'popup.html'), 'utf-8');
     // popup.js foi removido pois o popup atual é apenas informativo (sem botões)
     expect(popupHtml).not.toContain('popup.js');
   });
 
   // ── Teste 6: background.js escuta o comando correto ──────────────────────
   test('background.js escuta o comando "processar"', () => {
-    const bgCode = fs.readFileSync(path.join(__dirname, '../background.js'), 'utf-8');
+    const bgCode = fs.readFileSync(path.join(CODIGO_FONTE, 'background.js'), 'utf-8');
     // deve escutar "processar", que bate com manifest.commands.processar
     expect(bgCode).toContain('"processar"');
     // não deve mais referenciar "descrever" como comando
@@ -142,7 +145,7 @@ describe('AltVision - Testes Unitários', () => {
 
   // ── Teste 7: content.js usa WeakMap para identidade de overlays ───────────
   test('content.js usa WeakMap para mapear overlays (não depende de src como chave)', () => {
-    const contentCode = fs.readFileSync(path.join(__dirname, '../content.js'), 'utf-8');
+    const contentCode = fs.readFileSync(path.join(CODIGO_FONTE, 'content.js'), 'utf-8');
     expect(contentCode).toContain('WeakMap');
     expect(contentCode).toContain('overlayParaImg');
     expect(contentCode).toContain('imgParaOverlay');
@@ -150,13 +153,13 @@ describe('AltVision - Testes Unitários', () => {
 
   // ── Teste 8: content.js tem stopPropagation para evitar duplo disparo ─────
   test('content.js usa stopPropagation nos handlers de teclado do overlay', () => {
-    const contentCode = fs.readFileSync(path.join(__dirname, '../content.js'), 'utf-8');
+    const contentCode = fs.readFileSync(path.join(CODIGO_FONTE, 'content.js'), 'utf-8');
     expect(contentCode).toContain('stopPropagation');
   });
 
   // ── Teste 9: content.js desconecta observer antes de manipular o DOM ──────
   test('content.js desconecta o MutationObserver antes de atualizar overlays', () => {
-    const contentCode = fs.readFileSync(path.join(__dirname, '../content.js'), 'utf-8');
+    const contentCode = fs.readFileSync(path.join(CODIGO_FONTE, 'content.js'), 'utf-8');
     expect(contentCode).toContain('observer.disconnect()');
   });
 
