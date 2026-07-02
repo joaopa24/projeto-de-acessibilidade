@@ -17,7 +17,8 @@ entrega-altvision/
 │   └── teste-altvision.html   # Página com imagens para testes práticos
 ├── testes/
 │   ├── altvision.test.js      # Testes unitários (Jest)
-│   ├── package.json           # Dependências para testes
+│   ├── jest.setup.js          # Polyfill de TextEncoder/TextDecoder para o jsdom
+│   ├── package.json           # Dependências e configuração do Jest
 │   └── resultado-testes.txt   # Resultados da última execução
 ├── documentacao/
 │   └── relatorio.docx         # Relatório descritivo completo
@@ -101,7 +102,22 @@ Clique no ícone **✦ AltVision** na barra de ferramentas para ver um resumo do
 
 ## Testes
 
-Para executar os testes unitários:
+Os testes unitários usam **Jest** com o ambiente **jsdom** para simular o DOM do navegador.
+
+### Arquivos relevantes
+
+- **`altvision.test.js`** — suíte de testes, referenciando os arquivos-fonte em `../codigo-fonte/`
+- **`jest.setup.js`** — polyfill de `TextEncoder`/`TextDecoder` (necessário para o `jsdom` funcionar corretamente em algumas versões do Node no Windows)
+- **`package.json`** — configuração do Jest:
+  ```json
+  "jest": {
+    "testEnvironment": "jsdom",
+    "testMatch": ["**/*.test.js"],
+    "setupFiles": ["./jest.setup.js"]
+  }
+  ```
+
+### Como executar
 
 ```bash
 cd testes
